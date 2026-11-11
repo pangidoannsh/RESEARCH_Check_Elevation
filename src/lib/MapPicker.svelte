@@ -26,7 +26,7 @@
       attribution: '&copy; OpenStreetMap contributors, SRTM | &copy; OpenTopoMap (CC-BY-SA)',
     })
     topo.addTo(map)
-    L.control.layers({ Topografi: topo, OpenStreetMap: osm }).addTo(map)
+    L.control.layers({ Topografi: topo, OpenStreetMap: osm }, undefined, { position: "bottomleft" }).addTo(map)
 
     map.on('click', (e: L.LeafletMouseEvent) => {
       onpick({ lat: e.latlng.lat, lng: e.latlng.lng })
@@ -57,4 +57,4 @@
   })
 </script>
 
-<div bind:this={container} class="h-full min-h-80 w-full rounded-xl"></div>
+<div bind:this={container} class="h-full w-full"></div>

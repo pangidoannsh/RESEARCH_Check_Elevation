@@ -6,9 +6,9 @@ Dibangun dengan **Svelte 5 + TypeScript + Vite + Tailwind CSS v4**, peta memakai
 
 ## Fitur
 
-- **Satu titik**: klik peta, ketik koordinat (bisa tempel `lat, lng` di kolom latitude), atau pakai lokasi perangkat.
-- **Banyak titik**: tempel daftar koordinat (satu per baris), dicek otomatis per batch 100 titik, hasil bisa diunduh sebagai CSV.
-- Riwayat 20 pengecekan terakhir (disimpan di `localStorage`).
+- Peta Leaflet layar penuh (layer Topografi / OpenStreetMap).
+- Klik titik mana saja → panel menampilkan elevasi (mdpl & feet) dan koordinatnya.
+- Panel juga menampilkan detail request (URL, status HTTP, waktu respons) serta **raw JSON response** dari Open-Meteo, lengkap dengan tombol salin.
 - Tanpa API key, karena Open-Meteo gratis untuk penggunaan non-komersial.
 
 ## Menjalankan

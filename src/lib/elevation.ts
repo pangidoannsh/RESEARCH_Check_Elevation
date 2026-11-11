@@ -66,6 +66,37 @@ export async function getElevation(point: Coordinate, signal?: AbortSignal) {
   return result
 }
 
+export interface RawElevationResponse {
+  url: string
+  status: number
+  durationMs: number
+  /** Parsed JSON body exactly as returned by Open-Meteo. */
+  body: unknown
+  /** First elevation value, or null when missing / NaN. */
+  elevation: number | null
+}
+
+/** Single-point request that also exposes the raw API response for inspection. */
+export async function getElevationRaw(
+  point: Coordinate,
+  signal?: AbortSignal,
+): Promise<RawElevationResponse> {
+  const params = new URLSearchParams({
+    latitude: point.lat.toFixed(6),
+    longitude: point.lng.toFixed(6),
+  })
+  const url = `${ENDPOINT}?${params}`
+  const started = performance.now()
+  const res = await fetch(url, { signal })
+  const body = await res.json().catch(() => null)
+  const durationMs = Math.round(performance.now() - started)
+
+  const value = (body as { elevation?: unknown[] } | null)?.elevation?.[0]
+  const elevation = typeof value === 'number' && Number.isFinite(value) ? value : null
+
+  return { url, status: res.status, durationMs, body, elevation }
+}
+
 /**
  * Parse free text into coordinates. One "lat,lng" pair per line;
  * separators can be comma, semicolon, tab or whitespace.
