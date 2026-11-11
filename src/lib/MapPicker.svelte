@@ -17,16 +17,37 @@
   onMount(() => {
     map = L.map(container, { zoomControl: true }).setView([-2.5, 118], 5) // Indonesia
 
-    const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; OpenStreetMap contributors',
-    })
-    const topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-      maxZoom: 17,
-      attribution: '&copy; OpenStreetMap contributors, SRTM | &copy; OpenTopoMap (CC-BY-SA)',
-    })
+    // ArcGIS (Esri) basemap tiles. Note the {z}/{y}/{x} order used by ArcGIS MapServer.
+    const esri = (service: string, attribution: string, maxNativeZoom = 19) =>
+      L.tileLayer(
+        `https://server.arcgisonline.com/ArcGIS/rest/services/${service}/MapServer/tile/{z}/{y}/{x}`,
+        { maxZoom: 19, maxNativeZoom, attribution: `Tiles &copy; Esri &mdash; ${attribution}` },
+      )
+
+    const topo = esri(
+      'World_Topo_Map',
+      'Esri, HERE, Garmin, Intermap, USGS, FAO, NOAA, &copy; OpenStreetMap contributors, GIS User Community',
+    )
+    const imagery = esri(
+      'World_Imagery',
+      'Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
+    )
+    const street = esri(
+      'World_Street_Map',
+      'Esri, HERE, Garmin, USGS, &copy; OpenStreetMap contributors, GIS User Community',
+    )
+    const shaded = esri('World_Shaded_Relief', 'Source: Esri', 13)
+    // Place names / boundaries overlay for the satellite layer.
+    const labels = esri('Reference/World_Boundaries_and_Places', 'Esri')
+
     topo.addTo(map)
-    L.control.layers({ Topografi: topo, OpenStreetMap: osm }, undefined, { position: "bottomleft" }).addTo(map)
+    L.control
+      .layers(
+        { 'Topografi (Esri)': topo, 'Satelit (Esri)': imagery, 'Jalan (Esri)': street, 'Relief (Esri)': shaded },
+        { 'Label tempat': labels },
+        { position: 'bottomleft' },
+      )
+      .addTo(map)
 
     map.on('click', (e: L.LeafletMouseEvent) => {
       onpick({ lat: e.latlng.lat, lng: e.latlng.lng })

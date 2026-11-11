@@ -2,11 +2,11 @@
 
 Aplikasi web untuk mengecek ketinggian permukaan tanah (meter di atas permukaan laut / mdpl) dari koordinat latitude–longitude, menggunakan [Open-Meteo Elevation API](https://open-meteo.com/en/docs/elevation-api).
 
-Dibangun dengan **Svelte 5 + TypeScript + Vite + Tailwind CSS v4**, peta memakai **Leaflet** (OpenTopoMap / OpenStreetMap).
+Dibangun dengan **Svelte 5 + TypeScript + Vite + Tailwind CSS v4**, peta memakai **Leaflet** dengan tile **ArcGIS (Esri)**.
 
 ## Fitur
 
-- Peta Leaflet layar penuh (layer Topografi / OpenStreetMap).
+- Peta Leaflet layar penuh dengan basemap ArcGIS: Topografi, Satelit, Jalan, Relief + overlay label tempat.
 - Klik titik mana saja → panel menampilkan elevasi (mdpl & feet) dan koordinatnya.
 - Panel juga menampilkan detail request (URL, status HTTP, waktu respons) serta **raw JSON response** dari Open-Meteo, lengkap dengan tombol salin.
 - Tanpa API key, karena Open-Meteo gratis untuk penggunaan non-komersial.
